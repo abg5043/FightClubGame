@@ -114,6 +114,7 @@ public class App extends Application {
     roster.add(new Player("Potato", new Rose()));
     roster.add(new Player("Sunny", new Sunflower()));
     roster.add(new Player("Cher", new Sunflower()));
+    roster.add(new Player("Dr. May", new Professor()));
 
     //adds the overall roster to the overallRosterBox
     displayOverallRoster(roster);
