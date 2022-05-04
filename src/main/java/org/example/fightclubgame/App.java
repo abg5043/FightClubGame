@@ -4,7 +4,6 @@ import edu.missouriwestern.csc346.monsters.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -25,8 +24,12 @@ import java.util.ArrayList;
  */
 public class App extends Application {
   static VBox center = new VBox();
-  BorderPane borderPane = new BorderPane();
-  static VBox rosterBox = new VBox();
+  static BorderPane borderPane = new BorderPane();
+  static VBox overallRosterBox = new VBox();
+  public static TextField fightAnnouncement;
+  public static TextField roundAnnouncement;
+  public static VBox currentRosterBox = new VBox();
+
 
   @Override
   public void start(Stage stage) {
@@ -38,10 +41,24 @@ public class App extends Application {
     ScrollPane scrollPane = new ScrollPane(center);
     borderPane.setCenter(scrollPane);
 
+    setFightAnnouncement(new TextField("No fights to announce. Please stand by."));
+    fightAnnouncement.setAlignment(Pos.CENTER);
+    fightAnnouncement.setBackground(new Background(new BackgroundFill(Color.GOLDENROD, null, null)));
+    fightAnnouncement.setStyle("-fx-text-fill: grey; -fx-font-size: 16px;");
+    borderPane.setBottom(fightAnnouncement);
 
-    rosterBox.setMinWidth(250);
-    borderPane.setRight(rosterBox);
+    setRoundAnnouncement(new TextField("No rounds to announce. Please stand by."));
+    roundAnnouncement.setAlignment(Pos.CENTER);
+    roundAnnouncement.setBackground(new Background(new BackgroundFill(Color.GOLDENROD, null, null)));
+    roundAnnouncement.setStyle("-fx-text-fill: grey; -fx-font-size: 16px;");
+    borderPane.setTop(roundAnnouncement);
 
+
+    overallRosterBox.setMinWidth(250);
+    borderPane.setRight(overallRosterBox);
+
+    currentRosterBox.setMinWidth(250);
+    borderPane.setLeft(currentRosterBox);
 
     var scene = new Scene(borderPane, 1024, 768);
     stage.setScene(scene);
@@ -90,32 +107,39 @@ public class App extends Application {
 
     FxGameManager gm = new FxGameManager();
 
-    displayRoster(roster);
+    displayOverallRoster(roster);
 
     gm.contest(roster);
-
-    displayRoster(roster);
   }
 
   public static void blankLine() {
     addLabelToCenter(" ");
   }
 
-  private static void displayRoster(ArrayList<Player> roster) {
-    rosterBox.getChildren().clear();
+  private static void displayOverallRoster(ArrayList<Player> roster) {
+    overallRosterBox.getChildren().clear();
     blankLine();
 
-    TextField title = new TextField("THE ROSTER");
+    TextField title = new TextField("THE ORIGINAL ROSTER");
     title.setAlignment(Pos.CENTER);
-    title.setBackground(new Background(new BackgroundFill(Color.MINTCREAM, null, null)));
-    rosterBox.getChildren().add(title);
+    title.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+    title.setBackground(new Background(new BackgroundFill(Color.DIMGRAY, null, null)));
+    overallRosterBox.getChildren().add(title);
 
     for (Player player : roster) {
       TextField textField = new TextField(player.toString());
       textField.setAlignment(Pos.CENTER);
-      rosterBox.getChildren().add(textField);
+      overallRosterBox.getChildren().add(textField);
 
     }
     blankLine();
+  }
+
+  public static void setFightAnnouncement(TextField fightAnnouncement) {
+    App.fightAnnouncement = fightAnnouncement;
+  }
+
+  public static void setRoundAnnouncement(TextField roundAnnouncement) {
+    App.roundAnnouncement = roundAnnouncement;
   }
 }
